@@ -1,6 +1,6 @@
 from django.shortcuts import render ,redirect
 from django.http import HttpResponse , HttpResponseRedirect
-from .models import Hotels,Rooms,Reservation
+from .models import Hotels,Rooms,Reservation,Equipment,Equip_Reservation
 from django.contrib import messages
 from django.contrib.auth import authenticate,login,logout
 from django.contrib.auth.models import User
@@ -51,11 +51,17 @@ def aboutpage(request):
 def contactpage(request):
     return HttpResponse(render(request,'contact.html'))
 
+#equipment page
+def equippage(request):
+        all_equips = Equipment.objects.all()
+        data = {'all_equips':all_equips}
+        response = render(request,'equip.html',data)
+        return HttpResponse(response)
+
 #user sign up
 def user_sign_up(request):
     if request.method =="POST":
         user_name = request.POST['username']
-        
         password1 = request.POST['password1']
         password2 = request.POST['password2']
 
@@ -402,5 +408,30 @@ def sales(request, this_total = 0, last_total = 0, context = {}):
 
     return render(request,'staff/sales.html',context)
 
+#rent extra facilities
+@login_required(login_url='/user')
+def rent_equip(request):
+    if request.method == 'POST':
+        equip_id = request.POST['equip_id']
+        equip = Equipment.objects.all().get(id=equip_id)
 
+        current_user = request.user
+        equip_object = Equipment.objects.all().get(id=equip_id)
+        equip_object.status = '2'
+        user_object = User.objects.all().get(username=current_user)
+        reservation = Equip_Reservation()
 
+        reservation.guest = user_object
+        reservation.date = request.POST['date']
+
+        reservation.save()
+        return redirect("equippage")
+    else:
+        return HttpResponse('Access Denied')
+
+#view all equipment bookings    
+@login_required(login_url='/staff')
+def view_equip_bookings(request):
+    bookings = Equip_Reservation.objects.all()
+    if not bookings:
+        messages.warning(request,"No Bookings Found")

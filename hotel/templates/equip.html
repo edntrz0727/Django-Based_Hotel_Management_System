@@ -1,0 +1,79 @@
+{% extends 'basic.html' %}
+{% block title %}Hotel
+{% endblock title %}
+{% block body %}
+ <!--Booking Section starts here-->
+<section>
+    <div class="container-fluid py-5 px-5 ">
+        <form action="" method="POST">
+        {% csrf_token %}
+        <div class="row justify-content-center py-5 bg-light">
+            <div class="col-lg-4">
+                <label for="">Facilities</label>
+                <select class="form-control" name="choose_equip" id="equipstatus">
+                    <option>Facilites</option>
+                    {% for all_equips in Equipments %}
+                        <option value={{equip_type}}></option>
+                    {% endfor %}    
+                    
+                    
+                        
+                </select>
+            </div>
+            {%load app_tags%}
+            <div class="col-lg-2">
+                <label for="">Reservation Date</label>
+                <input class="form-control mr-sm-2" type="date" placeholder="date" name="cin" min={%todays_date%} max={% max_date %} aria-label="Search" required="True">
+            </div>
+            <div class="col-lg-2">
+
+                <input type="submit" value="Send Reservation" class="form-control mr-sm-2 btn btn-primary my-4" style="position: relative;top: 7px;">
+            </div>
+        </form>
+
+    </div>
+</section>
+
+<h3 class="text-center text-dark">Extra Facilities</h3>
+
+<!--Room tables starts here-->
+<div class="container-fluid px-0" style="border:1px solid red">
+
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th class="text-center">Information</th>
+                <th class="text-center">View</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td class="text-center">
+                    <!--Room details-->
+                    <h2>Swimming Pool</h2>
+                    <p>Price:$10/hour</p>
+                </td>
+                <td class="text-center">
+                    <img src="https://www.hotel.de/de/media/image/30/bd/ab/Ca_del_Galletto-Treviso-Schwimmbad-3-90921.jpg" alt="" class="img-fluid pt-4">
+                </td>
+
+            </tr>
+            <tr>
+                <td class="text-center">
+                    <!--Room details-->
+                    <h2>Workout Gym</h2>
+                    <p>Price:$10/hour</p>
+                </td>
+                <td class="text-center">
+                    <!--Room Images-->
+                    <img src="https://media.radissonhotels.net/image/radisson-blu-gautrain-hotel-sandton-johannesburg/health-club-fitness-center-gym/16256-116536-f63872990_3xl.jpg?impolicy=CustomCrop&cwidth=256&cheight=256"
+                        alt="" class="img-fluid pt-4">
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+
+{% endblock body %}
+

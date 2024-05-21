@@ -46,4 +46,25 @@ class Reservation(models.Model):
     def __str__(self):
         return self.guest.username
 
+class Equipment(models.Model):
+    EQUIP_STATUS = {
+        ("1", "available"),
+        ("2", "not available"),
+    }
+    EQUIP_TYPE = {
+        ("1", "pool"), 
+        ("2", "gym"),
+    }
 
+    equip_type = models.CharField(max_length=50,choices=EQUIP_TYPE)
+    price = models.IntegerField()
+    status = models.CharField(choices=EQUIP_STATUS,max_length=15)
+    hotel = models.ForeignKey(Hotels, on_delete = models.CASCADE)
+    def __str__(self):
+        return self.hotel.name
+    
+class Equip_Reservation(models.Model):
+        date = models.DateField(auto_now=False)
+        guest = models.ForeignKey(User,on_delete=models.CASCADE)
+        def __str__(self):
+            return self.guest.username
